@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Auntie Rose</title>
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+font-family:Arial, sans-serif;
+background:linear-gradient(180deg,#0a1a2f,#0f3057,#1e5f74);
+color:white;
+text-align:center;
+}
+
+h1{
+font-size:55px;
+margin-top:70px;
+animation:glow 2s infinite alternate;
+}
+
+h2{
+font-size:28px;
+}
+
+p{
+font-size:20px;
+width:80%;
+margin:auto;
+margin-top:20px;
+line-height:1.6;
+}
+
+@keyframes glow{
+from{text-shadow:0 0 10px white;}
+to{text-shadow:0 0 40px #00eaff;}
+}
+
+/* Balloons */
+.balloon{
+width:60px;
+height:80px;
+border-radius:50%;
+position:absolute;
+bottom:-100px;
+animation:float 14s infinite;
+}
+
+.balloon::after{
+content:'';
+width:2px;
+height:60px;
+background:white;
+position:absolute;
+left:50%;
+top:80px;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+100%{transform:translateY(-1300px);}
+}
+
+/* Roses */
+.rose{
+position:absolute;
+top:-50px;
+font-size:30px;
+animation:fall 10s linear infinite;
+opacity:0.8;
+}
+
+@keyframes fall{
+0%{transform:translateY(0) rotate(0deg);}
+100%{transform:translateY(1200px) rotate(360deg);}
+}
+
+/* Candles */
+.candles{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:15px;
+}
+
+.candle{
+width:20px;
+height:60px;
+background:#ffcccc;
+border-radius:5px;
+position:relative;
+}
+
+.flame{
+width:10px;
+height:15px;
+background:orange;
+border-radius:50%;
+position:absolute;
+top:-15px;
+left:5px;
+animation:flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker{
+from{transform:scale(1);}
+to{transform:scale(1.2);}
+}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+top:-50px;
+font-size:25px;
+animation:fallheart 8s linear infinite;
+opacity:0.8;
+}
+
+@keyframes fallheart{
+0%{transform:translateY(0) rotate(0deg);}
+100%{transform:translateY(1200px) rotate(360deg);}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+footer{
+position:absolute;
+bottom:20px;
+width:100%;
+font-size:18px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<h1>🎉 Happy Birthday Auntie Rose 🎉</h1>
+<h2>🌹 A Queen Deserves the Best 🌹</h2>
+
+<p>
+May your birthday glow as beautifully as these candles, bloom like these roses, and fill hearts with love.  
+Your love and kindness light up every life around you.  
+May this new year bring joy, peace, good health, and endless blessings. 🎂✨❤️
+</p>
+
+<!-- Candles -->
+<div class="candles">
+<div class="candle"><div class="flame"></div></div>
+<div class="candle"><div class="flame"></div></div>
+<div class="candle"><div class="flame"></div></div>
+<div class="candle"><div class="flame"></div></div>
+<div class="candle"><div class="flame"></div></div>
+</div>
+
+<!-- Balloons -->
+<div class="balloon" style="left:10%;background:red;"></div>
+<div class="balloon" style="left:25%;background:yellow;"></div>
+<div class="balloon" style="left:40%;background:blue;"></div>
+<div class="balloon" style="left:55%;background:purple;"></div>
+<div class="balloon" style="left:70%;background:orange;"></div>
+<div class="balloon" style="left:85%;background:pink;"></div>
+
+<!-- Roses -->
+<div class="rose" style="left:10%;">🌹</div>
+<div class="rose" style="left:30%;animation-delay:2s;">🌹</div>
+<div class="rose" style="left:50%;animation-delay:4s;">🌹</div>
+<div class="rose" style="left:70%;animation-delay:1s;">🌹</div>
+<div class="rose" style="left:90%;animation-delay:3s;">🌹</div>
+
+<!-- Floating hearts -->
+<div class="heart" style="left:15%;">❤️</div>
+<div class="heart" style="left:35%;animation-delay:2s;">❤️</div>
+<div class="heart" style="left:55%;animation-delay:1s;">❤️</div>
+<div class="heart" style="left:75%;animation-delay:3s;">❤️</div>
+<div class="heart" style="left:90%;animation-delay:4s;">❤️</div>
+
+<footer>
+💐 Much love from Flo, Everlyne & Charity 💐
+</footer>
+
+<script>
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let particles = [];
+
+function createFirework(){
+let x = Math.random() * canvas.width;
+let y = Math.random() * canvas.height;
+
+for(let i=0;i<100;i++){
+particles.push({
+x:x,
+y:y,
+dx:(Math.random()-0.5)*7,
+dy:(Math.random()-0.5)*7,
+life:120,
+color:`hsl(${Math.random()*360},100%,60%)`
+});
+}
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach((p,i)=>{
+p.x += p.dx;
+p.y += p.dy;
+p.life--;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fillStyle = p.color;
+ctx.fill();
+
+if(p.life <= 0){
+particles.splice(i,1);
+}
+});
+
+requestAnimationFrame(animate);
+}
+
+setInterval(createFirework, 500);
+animate();
+
+window.addEventListener("resize",()=>{
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+});
+</script>
+
+</body>
+</html>
